@@ -1,0 +1,73 @@
+        <script type="text/javascript">
+            $(document).ready( function() {
+                $("#addupForm").validate({
+                    // Define as regras
+                    rules:{
+                        riffName:{
+                            required: true, minlength: 2
+                        },
+			file: {
+			      required: true,
+			      accept: "wav|mp3|m4v|aac|3gp|mp4|caf"
+		 	},
+
+                    },
+                    // Define as mensagens de erro para cada regra
+                    messages:{
+                        riffName:{
+                            required: "You must to enter a riff name",
+                            minlength: "The riff name must have 4 characters at least."
+                        }
+                    }
+                });
+            });
+        </script>
+
+        <h2>{% if riff %}Edit your riff {% else %} Upload your riff {% endif %}</h2>
+
+	<br/>
+        <form enctype="multipart/form-data" action="/upload/" method="post">
+            <label>riff name</label>
+            <input name="riffName" type="text" 
+		{% if riff %} 
+		value="{{ riff.name }}" />
+		{% else %}
+		value="" />
+		{% endif %}
+
+            <label>musical instrument</label>
+	<select name="musicalInstrument">
+{% for i in InstrumentsList %}
+		<option 
+		{% if riff %}
+			{% ifequal riff.instrument i %}
+				SELECTED 
+			{% endifequal %}
+		{% endif %}
+		value="{{i}}"> {{i}} </option>
+{% endfor %}
+	</select>
+
+            <label>musical genre</label>
+	<select name="musicalGenre">
+{% for i in GenresList %}
+		<option 
+		{% if riff %}
+			{% ifequal riff.genre i %}
+				SELECTED 
+			{% endifequal %}
+		{% endif %}
+		value="{{i}}"> {{i}} </option>
+{% endfor %}
+	</select>
+   <br/>
+{% if not riff %}
+
+            <label>riff file</label>
+	        <input type="file" name="file" /><br/>
+		<input type="hidden" name="id" id="id" value="none"/>
+{% else %}
+		<input type="hidden" name="id" id="id" value="{{ riff.key.id }}"/>
+{% endif %}
+            <input type="submit" class="submit" value="Enviar" />
+        </form>

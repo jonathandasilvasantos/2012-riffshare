@@ -1,0 +1,46 @@
+<p><h2>{{ ControllerName }}</h2></p>
+<p>
+
+<table>
+<tr>
+<th>Riff Name </th><th>Genre </th><th>Instrument </th><th>Author </th><th>Rattings </th><th>Date </th><th>File </th>
+{% if logged %}
+<th>Rate</th>
+{% endif %}
+{% if edit %}
+<th>Edit </th>
+<th>Delete </th>
+{% endif %}
+</tr>
+{% for riff in riffs %}
+<tr>
+<td>{{ riff.name }}</td>
+<td>{{ riff.genre }}</td>
+<td>{{ riff.instrument }}</td>
+<td>{{ riff.author.nickname }}</td>
+<td>{{ riff.rates }}</td>
+<td>{{ riff.date|date:"D d M Y" }}</td>
+<td><a href = "/provider/{{ riff.fileid.key.id }}">download</a></td>
+{% if logged %}
+<td>
+<div id="{{riff.key.id}}rate" style="display: block">
+<a href="javascript:showStars({{riff.key.id}})">rate</a>
+</div>
+<div id="{{riff.key.id}}" style="display: none">
+<a id="displayText" href="javascript:doRate('{{riff.key.id}}','1');"><img src="/stylesheets/images/star.gif"/></a>
+<a id="displayText" href="javascript:doRate('{{riff.key.id}}','2');"><img src="/stylesheets/images/star.gif"/></a>
+<a id="displayText" href="javascript:doRate('{{riff.key.id}}','3');"><img src="/stylesheets/images/star.gif"/></a>
+<a id="displayText" href="javascript:doRate('{{riff.key.id}}','4');"><img src="/stylesheets/images/star.gif"/></a>
+<a id="displayText" href="javascript:doRate('{{riff.key.id}}','5');"><img src="/stylesheets/images/star.gif"/></a>
+</div>
+</td>
+{% endif %}
+{% if edit %}
+<td><a href = "/addup/{{ riff.key.id }}">edit</a></td>
+<td><a href = "/delete/{{ riff.key.id }}">delete</a></td>
+{% endif %}
+</tr>
+</p>
+{% endfor %}
+
+</table>
